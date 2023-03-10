@@ -30,8 +30,6 @@ urlpatterns = [
     #show
     path('addshow/',views.ShowCreateViewSet.as_view(),name='create show'),
     path('listshow/',views.ShowListviewSet.as_view(),name = "list show"),
-    # path('deleteshow/<int:pk>/',views.ShowDestroyViewSet.as_view({'get':'destroy'}),name="destroy show"),
-    # path('updateshow/<int:pk>/',views.ShowUpdateViewSet.as_view(),name="upate show"),
 
     #seat
     path('viewseats/',views.ViewAllSeats.as_view(),name="adding seats"),

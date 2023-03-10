@@ -50,7 +50,7 @@ class ListUsers(APIView):
     permission_classes=[permissions.IsAdminUser]
     authentication_classes = [JWTAuthentication]
     def get(self,request,format=None):
-        usernames = [user.username for user in User.objects.all()]
+        usernames = [{user.id:user.username} for user in User.objects.all()]
         return Response(usernames)
     
 
@@ -256,7 +256,7 @@ class MovieCreateViewSet(generics.CreateAPIView):
 class MovieListViewSet(generics.ListAPIView):
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [permissions.IsAuthenticated]
     authentication_classes = [JWTAuthentication]
     filter_backends = [filters.OrderingFilter,filters.SearchFilter]
     ordering_fields = '__all__'
@@ -447,7 +447,7 @@ class BookMyshow(viewsets.ModelViewSet):
 class ViewBookings(generics.ListAPIView):
     queryset = Booking.objects.all()
     serializer_class = BookingSerializer
-    authentication_classes = [JWTAuthentication]
+    # authentication_classes = [JWTAuthentication]
     permission_classes = [permissions.IsAdminUser]
 
 def send_ticket_email(booking):
@@ -551,7 +551,7 @@ class ExcelTheater(APIView):
             seat_instance =Seat.objects.filter(show=data.id)
             booked_seats = 0
             for seat in seat_instance:
-                if seat.booking_status == "BOOKED":
+                if seat.booking_status =="RESERVED":
                     booked_seats +=1
             col=0
             ws.write(row,col,data.id)
